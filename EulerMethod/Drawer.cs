@@ -19,6 +19,5 @@ internal class Drawer
         plt.ShowLegend();
         plt.ShowGrid();
         plt.Save(filePath, 800, 600);
-        Console.WriteLine($"График сохранён в файл: {filePath}");
     }
 }

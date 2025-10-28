@@ -34,7 +34,7 @@ class Program
         }
         else if (key.Key == ConsoleKey.R)
         {
-            string jsonFromFile = File.ReadAllText("euler_data.json");
+            string jsonFromFile = File.ReadAllText("../../../euler_data.json");
             var eulerData = JsonConvert.DeserializeObject<EulerData>(jsonFromFile);
             y = solver.Solve(eulerData);
         }
@@ -76,7 +76,7 @@ class Program
         Console.WriteLine("Y=");
         for(int i = 0; i < y.Size; i++)
             Console.WriteLine(y[i]);
-        new Drawer("output.png").DrawToFile(solver.Ydata, solver.time);
+        new Drawer("../../../output.png").DrawToFile(solver.Ydata, solver.time);
     }
 
     static Matrix ReadMatrix(string name, int rows, int cols)
