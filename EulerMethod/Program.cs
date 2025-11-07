@@ -4,6 +4,31 @@ class Program
 {
     private static void Main()
     {
+        CircuitGraph graph = new();
+
+        graph.AddBranch("J", "I", 0, 2, 10);
+        graph.AddBranch("L", "L", 2, 1, 1);
+        graph.AddBranch("R1", "R", 1, 0, 2);
+        graph.AddBranch("R2", "R", 2, 0, 2);
+        graph.AddBranch("C", "C", 2, 0, 3);
+
+        var treeBranches = TreeBuilder.BuildTree(graph);
+
+        Console.WriteLine("Дерево содержит ветви:");
+        foreach (var i in treeBranches)
+            Console.WriteLine($"{graph.Branches[i].Name} ({graph.Branches[i].Type})");
+
+        Matrix M = MMatrixBuilder.Build(graph, treeBranches);
+
+        for(int i = 0; i < M.Rows; i++)
+        {
+            for(int j = 0; j < M.Columns; j++)
+            {
+                Console.Write(M[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
+
         EulerSolver solver = new EulerSolver();
         Vector y = new(1);
         Console.WriteLine("H - Ввести вручную \nR - Считать из файла\nL - Схема аналогового устройства");
