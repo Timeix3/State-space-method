@@ -17,8 +17,10 @@ class Program
         Console.WriteLine("Дерево содержит ветви:");
         foreach (var i in treeBranches)
             Console.WriteLine($"{graph.Branches[i].Name} ({graph.Branches[i].Type})");
+        Console.WriteLine();
 
         Matrix M = MMatrixBuilder.Build(graph, treeBranches);
+        Console.WriteLine("\nM matrix: \n");
 
         for(int i = 0; i < M.Rows; i++)
         {
@@ -28,6 +30,24 @@ class Program
             }
             Console.WriteLine();
         }
+
+        var allBranches = Enumerable.Range(0, graph.Branches.Count).ToList();
+        var chordBranchesOrdered = allBranches.Except(treeBranches)
+            .OrderBy(i => MMatrixBuilder.TypePriority(graph.Branches[i].Type))
+            .ToList();
+
+        var kvl = KirchhoffBuilder.BuildKVL(M, graph, treeBranches, chordBranchesOrdered);
+        var kcl = KirchhoffBuilder.BuildKCL(M, graph, treeBranches, chordBranchesOrdered);
+
+        Console.WriteLine("\nУравнения KVL: ");
+        for (int i = 0; i < kvl.Count; i++)
+            Console.WriteLine($"Контур {i + 1} ({graph.Branches[chordBranchesOrdered[i]].Name}):  {kvl[i]}");
+
+        Console.WriteLine("\nУравнения KCL: ");
+        for (int j = 0; j < kcl.Count; j++)
+            Console.WriteLine($"Сечение {j + 1} ({graph.Branches[treeBranches[j]].Name}):  {kcl[j]}");
+
+        Console.WriteLine();
 
         EulerSolver solver = new EulerSolver();
         Vector y = new(1);

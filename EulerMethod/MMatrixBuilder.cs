@@ -22,8 +22,8 @@
             var b = graph.Branches[bi];
             if (!treeAdj.ContainsKey(b.From)) treeAdj[b.From] = new();
             if (!treeAdj.ContainsKey(b.To)) treeAdj[b.To] = new();
-            treeAdj[b.From].Add((b.To, bi, true));
-            treeAdj[b.To].Add((b.From, bi, false));
+            treeAdj[b.From].Add((b.To, bi, false));
+            treeAdj[b.To].Add((b.From, bi, true));
         }
 
         for (int i = 0; i < nChords; i++)
@@ -53,7 +53,7 @@
         return M;
     }
 
-    private static int TypePriority(string type)
+    public static int TypePriority(string type)
     {
         return type switch
         {
