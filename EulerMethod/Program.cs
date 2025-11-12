@@ -46,6 +46,7 @@ class Program
         Console.WriteLine("\nУравнения KCL: ");
         for (int j = 0; j < kcl.Count; j++)
             Console.WriteLine($"Сечение {j + 1} ({graph.Branches[treeBranches[j]].Name}):  {kcl[j]}");
+        //kvl[0],kvl[1],kcl[0]
 
         Console.WriteLine();
 
@@ -118,6 +119,7 @@ class Program
             };
             y = solver.Solve(data);
         }
+        else Environment.Exit(0);
         Console.WriteLine("Y=");
         for(int i = 0; i < y.Size; i++)
             Console.WriteLine(y[i]);

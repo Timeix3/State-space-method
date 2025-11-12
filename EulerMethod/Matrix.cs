@@ -46,6 +46,15 @@ internal class Matrix
         return result;
     }
 
+    public static Matrix Transpose(Matrix M)
+    {
+        Matrix T = new Matrix(M.Columns, M.Rows);
+        for (int i = 0; i < M.Rows; i++)
+            for (int j = 0; j < M.Columns; j++)
+                T[j][i] = M[i][j];
+        return T;
+    }
+
     public Vector GetColumn(int columnIndex)
     {
         Vector column = new Vector(Rows);
