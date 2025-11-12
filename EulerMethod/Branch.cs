@@ -1,11 +1,14 @@
-﻿internal class Branch
-{
-    public string Name { get; }
-    public string Type { get; } // R, L, C, V, I
-    public int From { get; }
-    public int To { get; }
-    public double Value { get; }
+﻿using Newtonsoft.Json;
 
+internal class Branch
+{
+    [JsonProperty] public string Name { get; }
+    [JsonProperty] public string Type { get; } // R, L, C, V, I
+    [JsonProperty] public int From { get; }
+    [JsonProperty] public int To { get; }
+    [JsonProperty] public double Value { get; }
+
+    [JsonConstructor]
     public Branch(string name, string type, int from, int to, double value)
     {
         Name = name;

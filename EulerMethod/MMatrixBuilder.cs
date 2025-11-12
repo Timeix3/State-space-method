@@ -60,13 +60,13 @@
             "R" => 1,
             "L" => 2,
             "I" => 3,
-            _ => 9
+            _ => 7
         };
     }
 
     private static List<(int branchIndex, bool direction)> FindPath(
         Dictionary<int, List<(int neighbor, int branchIndex, bool direction)>> adj,
-        int start, int goal)
+        int start, int end)
     {
         var stack = new Stack<(int node, List<(int branchIndex, bool direction)> path)>();
         stack.Push((start, new List<(int branchIndex, bool direction)>()));
@@ -75,7 +75,7 @@
         while (stack.Count > 0)
         {
             var (node, path) = stack.Pop();
-            if (node == goal)
+            if (node == end)
                 return path;
             visited.Add(node);
             if (!adj.ContainsKey(node)) continue;

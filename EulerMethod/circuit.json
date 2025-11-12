@@ -1,0 +1,37 @@
+[
+    {
+      "Name": "J",
+      "Type": "I",
+      "From": 0,
+      "To": 2,
+      "Value": 10
+    },
+    {
+      "Name": "L",
+      "Type": "L",
+      "From": 2,
+      "To": 1,
+      "Value": 1
+    },
+    {
+      "Name": "R1",
+      "Type": "R",
+      "From": 1,
+      "To": 0,
+      "Value": 2
+    },
+    {
+      "Name": "R2",
+      "Type": "R",
+      "From": 2,
+      "To": 0,
+      "Value": 2
+    },
+    {
+      "Name": "C",
+      "Type": "C",
+      "From": 2,
+      "To": 0,
+      "Value": 3
+    }
+  ]

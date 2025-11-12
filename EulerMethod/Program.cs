@@ -6,49 +6,18 @@ class Program
     {
         CircuitGraph graph = new();
 
-        graph.AddBranch("J", "I", 0, 2, 10);
-        graph.AddBranch("L", "L", 2, 1, 1);
-        graph.AddBranch("R1", "R", 1, 0, 2);
-        graph.AddBranch("R2", "R", 2, 0, 2);
-        graph.AddBranch("C", "C", 2, 0, 3);
-
-        var treeBranches = TreeBuilder.BuildTree(graph);
-
-        Console.WriteLine("Дерево содержит ветви:");
-        foreach (var i in treeBranches)
-            Console.WriteLine($"{graph.Branches[i].Name} ({graph.Branches[i].Type})");
-        Console.WriteLine();
-
-        Matrix M = MMatrixBuilder.Build(graph, treeBranches);
-        Console.WriteLine("\nM matrix: \n");
-
-        for(int i = 0; i < M.Rows; i++)
+        string path = "../../../circuit.json";
+        if (!File.Exists(path))
         {
-            for(int j = 0; j < M.Columns; j++)
-            {
-                Console.Write(M[i][j] + " ");
-            }
-            Console.WriteLine();
+            Console.WriteLine("Файл не найден!");
+            return;
         }
 
-        var allBranches = Enumerable.Range(0, graph.Branches.Count).ToList();
-        var chordBranchesOrdered = allBranches.Except(treeBranches)
-            .OrderBy(i => MMatrixBuilder.TypePriority(graph.Branches[i].Type))
-            .ToList();
-
-        var kvl = KirchhoffBuilder.BuildKVL(M, graph, treeBranches, chordBranchesOrdered);
-        var kcl = KirchhoffBuilder.BuildKCL(M, graph, treeBranches, chordBranchesOrdered);
-
-        Console.WriteLine("\nУравнения KVL: ");
-        for (int i = 0; i < kvl.Count; i++)
-            Console.WriteLine($"Контур {i + 1} ({graph.Branches[chordBranchesOrdered[i]].Name}):  {kvl[i]}");
-
-        Console.WriteLine("\nУравнения KCL: ");
-        for (int j = 0; j < kcl.Count; j++)
-            Console.WriteLine($"Сечение {j + 1} ({graph.Branches[treeBranches[j]].Name}):  {kcl[j]}");
-        //kvl[0],kvl[1],kcl[0]
-
-        Console.WriteLine();
+        graph = LoadGraphFromFile(path);
+        Console.WriteLine("\nПрочитанные ветви схемы:");
+        foreach (var b in graph.Branches)
+            Console.WriteLine($"{b.Name} ({b.Type}) {b.From}->{b.To}, Value={b.Value}");
+        SystemOfEquations(graph);
 
         EulerSolver solver = new EulerSolver();
         Vector y = new(1);
@@ -74,10 +43,11 @@ class Program
                 X = ReadVector("X0", n),
                 V = ReadVector("V", m)
             };
-            string json = JsonConvert.SerializeObject(data,Formatting.Indented);
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText("euler_data2.json", json);
             y = solver.Solve(data);
         }
+
         else if (key.Key == ConsoleKey.R)
         {
             string jsonFromFile = File.ReadAllText("../../../euler_data.json");
@@ -121,10 +91,62 @@ class Program
         }
         else Environment.Exit(0);
         Console.WriteLine("Y=");
-        for(int i = 0; i < y.Size; i++)
+        for (int i = 0; i < y.Size; i++)
             Console.WriteLine(y[i]);
         new Drawer("../../../output.png").DrawToFile(solver.Ydata, solver.time);
     }
+
+    private static void SystemOfEquations(CircuitGraph graph)
+    {
+        var treeBranches = TreeBuilder.BuildTree(graph);
+
+        Console.WriteLine("Дерево содержит ветви:");
+        foreach (var i in treeBranches)
+            Console.WriteLine($"{graph.Branches[i].Name} ({graph.Branches[i].Type})");
+        Console.WriteLine();
+
+        Matrix M = MMatrixBuilder.Build(graph, treeBranches);
+        Console.WriteLine("\nM matrix: \n");
+
+        for (int i = 0; i < M.Rows; i++)
+        {
+            for (int j = 0; j < M.Columns; j++)
+            {
+                Console.Write(M[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
+
+        var allBranches = Enumerable.Range(0, graph.Branches.Count).ToList();
+        var chordBranchesOrdered = allBranches.Except(treeBranches)
+            .OrderBy(i => MMatrixBuilder.TypePriority(graph.Branches[i].Type))
+            .ToList();
+
+        var kvl = KirchhoffBuilder.BuildKVL(M, graph, treeBranches, chordBranchesOrdered);
+        var kcl = KirchhoffBuilder.BuildKCL(M, graph, treeBranches, chordBranchesOrdered);
+
+        Console.WriteLine("\nУравнения KVL: ");
+        for (int i = 0; i < kvl.Count; i++)
+            Console.WriteLine($"Контур {i + 1} ({graph.Branches[chordBranchesOrdered[i]].Name}):  {kvl[i]}");
+
+        Console.WriteLine("\nУравнения KCL: ");
+        for (int j = 0; j < kcl.Count; j++)
+            Console.WriteLine($"Сечение {j + 1} ({graph.Branches[treeBranches[j]].Name}):  {kcl[j]}");
+        //kvl[0],kvl[1],kcl[0]
+
+        Console.WriteLine();
+    }
+
+    static CircuitGraph LoadGraphFromFile(string path)
+    {
+        string json = File.ReadAllText(path);
+        var branches = JsonConvert.DeserializeObject<List<Branch>>(json);
+        CircuitGraph graph = new CircuitGraph();
+        foreach (var b in branches)
+            graph.AddBranch(b.Name, b.Type, b.From, b.To, b.Value);
+        return graph;
+    }
+
 
     static Matrix ReadMatrix(string name, int rows, int cols)
     {
