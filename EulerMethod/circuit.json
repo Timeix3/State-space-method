@@ -4,7 +4,7 @@
       "Type": "I",
       "From": 0,
       "To": 2,
-      "Value": 10
+      "Value": 5
     },
     {
       "Name": "L",
@@ -18,20 +18,20 @@
       "Type": "R",
       "From": 1,
       "To": 0,
-      "Value": 2
+      "Value": 10
     },
     {
       "Name": "R2",
       "Type": "R",
       "From": 2,
       "To": 0,
-      "Value": 2
+      "Value": 15
     },
     {
       "Name": "C",
       "Type": "C",
       "From": 2,
       "To": 0,
-      "Value": 3
+      "Value": 2
     }
   ]

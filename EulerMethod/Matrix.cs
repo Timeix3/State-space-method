@@ -1,34 +1,21 @@
-﻿using Newtonsoft.Json;
-
-[JsonObject]
+﻿
 internal class Matrix
 {
-    [JsonProperty]
-    private Vector[] matrix;
+    private Vector[] _matrix;
 
-    [JsonIgnore]
     public int Rows { get; }
 
-    [JsonIgnore]
     public int Columns { get; }
 
     public Matrix(int rows, int columns)
     {
         Rows = rows;
         Columns = columns;
-        matrix = new Vector[rows];
+        _matrix = new Vector[rows];
         for (int i = 0; i < rows; i++)
         {
-            matrix[i] = new Vector(columns);
+            _matrix[i] = new Vector(columns);
         }
-    }
-
-    [JsonConstructor]
-    private Matrix(Vector[] matrix)
-    {
-        this.matrix = matrix;
-        Rows = matrix.Length;
-        Columns = matrix[0].Size;
     }
 
     public static Vector operator *(Matrix matrix, Vector vector)
@@ -44,6 +31,18 @@ internal class Matrix
             }
         }
         return result;
+    }
+
+    public void Print()
+    {
+        for (int i = 0; i < Rows; i++)
+        {
+            for (int j = 0; j < Columns; j++)
+            {
+                Console.Write($"{this[i][j],6:F3} ");
+            }
+            Console.WriteLine();
+        }
     }
 
     public static Matrix Transpose(Matrix M)
@@ -67,7 +66,7 @@ internal class Matrix
 
     public Vector this[int row]
     {
-        get => matrix[row];
-        set => matrix[row] = value;
+        get => _matrix[row];
+        set => _matrix[row] = value;
     }
 }

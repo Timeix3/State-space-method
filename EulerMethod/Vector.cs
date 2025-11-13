@@ -1,26 +1,21 @@
-﻿using Newtonsoft.Json;
-
-[JsonObject]
+﻿
 internal class Vector
 {
-    [JsonProperty]
-    private double[] vector;
+    private double[] _vector;
 
-    [JsonIgnore]
-    public int Size => vector.Length;
+    public int Size => _vector.Length;
     
-    public Vector(int size) => vector = new double[size];
-
-    [JsonConstructor]
-    private Vector(double[] vector) => this.vector = vector;
+    public Vector(int size) => _vector = new double[size];
 
     public double this[int index]
     {
-        get => vector[index];
-        set => vector[index] = value;
+        get => _vector[index];
+        set => _vector[index] = value;
     }
 
-    public double[] ToArray() => vector;
+    public double[] ToArray() => _vector;
+
+    public void Print() => Console.WriteLine("(" + string.Join(", ", _vector) + ")");
 
     public static Vector operator +(Vector v1, Vector v2)
     {

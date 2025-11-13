@@ -1,23 +1,21 @@
-﻿
-using ScottPlot;
+﻿using ScottPlot;
 
 internal class Drawer
 {
-    private string filePath;
-    public Drawer(string filePath) => this.filePath = filePath;
-    public void DrawToFile(Matrix Ydata, double[] time)
+    private string _filePath;
+    public Drawer(string filePath) => _filePath = filePath;
+    public void DrawToFile(Matrix data, double[] time, string[] variables)
     {
         var plt = new Plot();
-        for (int j = 0; j < Ydata.Columns; j++)
+        for (int j = 0; j < data.Columns; j++)
         {
-            var Yj = plt.Add.ScatterLine(time, Ydata.GetColumn(j).ToArray());
-            Yj.LegendText = $"Y{j + 1}(t)";
+            var curve = plt.Add.ScatterLine(time, data.GetColumn(j).ToArray());
+            curve.LegendText = variables[j];
         }
-        plt.Title("Компоненты вектора Y(t)");
-        plt.XLabel("Время, с");
-        plt.YLabel("Значение Y");
+        plt.XLabel("Время");
+        plt.YLabel("Значение");
         plt.ShowLegend();
         plt.ShowGrid();
-        plt.Save(filePath, 800, 600);
+        plt.Save(_filePath, 800, 600);
     }
 }
