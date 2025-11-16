@@ -72,7 +72,6 @@ class Program
         Console.WriteLine("\nМатрица системы: ");
         Matrix systemMatrix = KirchhoffBuilder.BuildSystemMatrix(kvl, kcl, ohm, variables);
         systemMatrix.Print();
-        //variablesY = [ "I_R2", "I_C" ];
         Console.Write("Введите анализируемые переменные через пробел: ");
         variablesY = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries);
         SystemSolver systemSolver = new(graph.Branches, systemMatrix, variables, variablesY);

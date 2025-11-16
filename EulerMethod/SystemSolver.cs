@@ -30,7 +30,10 @@ internal class SystemSolver
     {
         data.X = new Vector(data.VariablesX.Count);
         for (int i = 0; i < data.VariablesX.Count; i++)
-            data.X[i] = 0.0;
+        {
+            Console.Write($"Введите значение {data.VariablesX[i]} в момент времени t = 0: ");
+            data.X[i] = double.Parse(Console.ReadLine());
+        }
     }
 
     private void CreateV(SystemData data)
