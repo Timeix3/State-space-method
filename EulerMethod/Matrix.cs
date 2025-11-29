@@ -1,22 +1,22 @@
 ﻿
 internal class Matrix
 {
-    private Vector[] _matrix;
+    private List<Vector> _matrix;
 
-    public int Rows { get; }
+    public int Rows => _matrix.Count;
 
-    public int Columns { get; }
+    public int Columns => _matrix[0].Size;
 
     public Matrix(int rows, int columns)
     {
-        Rows = rows;
-        Columns = columns;
-        _matrix = new Vector[rows];
+        _matrix = new List<Vector>(rows);
         for (int i = 0; i < rows; i++)
         {
-            _matrix[i] = new Vector(columns);
+            _matrix.Add(new Vector(columns));
         }
     }
+
+    public Matrix(List<Vector> vectors) => _matrix = vectors;
 
     public static Vector operator *(Matrix matrix, Vector vector)
     {
@@ -32,6 +32,8 @@ internal class Matrix
         }
         return result;
     }
+
+    public void Add(Vector row) => _matrix.Add(row);
 
     public void Print()
     {

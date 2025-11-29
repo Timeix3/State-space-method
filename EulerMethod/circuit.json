@@ -1,37 +1,65 @@
 [
-    {
-      "Name": "J",
-      "Type": "I",
-      "From": 0,
-      "To": 2,
-      "Value": 5
-    },
-    {
-      "Name": "L",
-      "Type": "L",
-      "From": 2,
-      "To": 1,
-      "Value": 1
-    },
-    {
-      "Name": "R1",
-      "Type": "R",
-      "From": 1,
-      "To": 0,
-      "Value": 10
-    },
-    {
-      "Name": "R2",
-      "Type": "R",
-      "From": 2,
-      "To": 0,
-      "Value": 15
-    },
-    {
-      "Name": "C",
-      "Type": "C",
-      "From": 2,
-      "To": 0,
-      "Value": 2
-    }
-  ]
+  {
+    "Name": "Uzi",
+    "Type": "V",
+    "From": 2,
+    "To": 0,
+    "Value": 0.5
+  },
+  {
+    "Name": "Czi",
+    "Type": "C",
+    "From": 0,
+    "To": 2,
+    "Value": 0.5
+  },
+  {
+    "Name": "Czs",
+    "Type": "C",
+    "From": 1,
+    "To": 0,
+    "Value": 0.5
+  },
+  {
+    "Name": "J",
+    "Type": "J",
+    "From": 1,
+    "To": 2,
+    "Value": 0.5
+  },
+  {
+    "Name": "Csi",
+    "Type": "C",
+    "From": 1,
+    "To": 2,
+    "Value": 0.5
+  },
+  {
+    "Name": "Rsi",
+    "Type": "R",
+    "From": 1,
+    "To": 2,
+    "Value": 0.5
+  },
+  {
+    "Name": "R",
+    "Type": "R",
+    "From": 1,
+    "To": 3,
+    "Value": 0.5
+  },
+  {
+    "Name": "Up",
+    "Type": "V",
+    "From": 3,
+    "To": 2,
+    "Value": 0.5
+  },
+  {
+    "Name": "Cn",
+    "Type": "C",
+    "From": 1,
+    "To": 2,
+    "Value": 0.5
+  }
+]

@@ -15,14 +15,14 @@ internal static class KirchhoffBuilder
             var chord = graph.Branches[chordIndex];
 
             Equation eq = new Equation();
-            eq.AddTerm(new Term($"U_{chord.Name}",TermType.Variable, 1));
+            eq.AddTerm(new Term($"U_{chord.Name}",TermType.Variable, chord.Type == "V" ? -1 : 1));
             for (int col = 0; col < treeBranches.Count; col++)
             {
                 double coeff = M[row][col];
-                if (Math.Abs(coeff) > 1e-9)
+                if (Math.Abs(coeff) > 1e-10)
                 {
                     var treeBranch = graph.Branches[treeBranches[col]];
-                    eq.AddTerm(new Term($"U_{treeBranch.Name}", TermType.Variable, coeff));
+                    eq.AddTerm(new Term($"U_{treeBranch.Name}", TermType.Variable, (treeBranch.Type == "V" ? -1 : 1) * coeff));
                 }
             }
             eq.AddTerm(new Term("= 0", TermType.Equal, -1));
@@ -52,7 +52,7 @@ internal static class KirchhoffBuilder
             for (int row = 0; row < chordBranchesOrdered.Count; row++)
             {
                 double coeff = Mt[col][row];
-                if (Math.Abs(coeff) > 1e-9)
+                if (Math.Abs(coeff) > 1e-10)
                 {
                     var chord = graph.Branches[chordBranchesOrdered[row]];
                     eq.AddTerm(new Term($"I_{chord.Name}", TermType.Variable, -coeff));

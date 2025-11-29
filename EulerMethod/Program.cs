@@ -16,7 +16,7 @@ class Program
         graph = LoadGraphFromFile(path);
         Console.WriteLine("\nПрочитанные ветви схемы:");
         foreach (var b in graph.Branches)
-            Console.WriteLine($"{b.Name} ({b.Type}) {b.From}->{b.To}, Value={b.Value}");
+            Console.WriteLine($"{b.Name} ({b.Type}) {b.From}->{b.To}, Value = {b.Value}");
 
         SystemData data = SystemOfEquations(graph);
         EulerSolver solver = new EulerSolver();
@@ -37,11 +37,9 @@ class Program
 
         Matrix M = MMatrixBuilder.Build(graph, treeBranches);
         Console.WriteLine("\nM матрица: \n");
-
         M.Print();
 
         var allBranches = Enumerable.Range(0, graph.Branches.Count).ToList();
-
         var chordBranchesOrdered = allBranches.Except(treeBranches)
             .OrderBy(i => MMatrixBuilder.TypePriority(graph.Branches[i].Type))
             .ToList();
@@ -51,7 +49,7 @@ class Program
 
         Console.WriteLine("\nУравнения KVL: ");
         for (int i = 0; i < kvl.Count; i++)
-                Console.WriteLine($"Контур {i + 1} ({graph.Branches[chordBranchesOrdered[i]].Name}):  {kvl[i]}");
+            Console.WriteLine($"Контур {i + 1} ({graph.Branches[chordBranchesOrdered[i]].Name}):  {kvl[i]}");
 
         Console.WriteLine("\nУравнения KCL: ");
         for (int j = 0; j < kcl.Count; j++)
@@ -62,26 +60,37 @@ class Program
         for (int j = 0; j < ohm.Count; j++)
             Console.WriteLine($"{ohm[j]}");
 
-        string[] variables = new string[2 * graph.Branches.Count];
-        for (int i = 0; i < graph.Branches.Count; i++)
-        {
-            variables[2 * i] = "I_" + graph.Branches[i].Name;
-            variables[2 * i + 1] = "U_" + graph.Branches[i].Name;
-        }
+        string[] variables = CreateVariables(graph);
         Console.WriteLine("Переменные: " + string.Join(" ", variables));
         Console.WriteLine("\nМатрица системы: ");
         Matrix systemMatrix = KirchhoffBuilder.BuildSystemMatrix(kvl, kcl, ohm, variables);
         systemMatrix.Print();
+
         Console.Write("Введите анализируемые переменные через пробел: ");
         variablesY = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
         SystemSolver systemSolver = new(graph.Branches, systemMatrix, variables, variablesY);
-        SystemData data = systemSolver.Solve();
+        systemSolver.Solve();
+        SystemData data = systemSolver.data;
         Console.WriteLine();
         data.Print();
+
         return data;
     }
 
-    static CircuitGraph LoadGraphFromFile(string path)
+    private static string[] CreateVariables(CircuitGraph graph)
+    {
+        string[] variables = new string[2 * graph.Branches.Count];
+        for (int i = 0; i < graph.Branches.Count; i++)
+        {
+            variables[2 * i] = "U_" + graph.Branches[i].Name;
+            variables[2 * i + 1] = "I_" + graph.Branches[i].Name;
+        }
+
+        return variables;
+    }
+
+    private static CircuitGraph LoadGraphFromFile(string path)
     {
         string json = File.ReadAllText(path);
         var branches = JsonConvert.DeserializeObject<List<Branch>>(json);
