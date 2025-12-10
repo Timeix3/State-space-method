@@ -17,16 +17,16 @@ class Program
         Console.WriteLine("\nПрочитанные ветви схемы:");
         foreach (var b in graph.Branches)
             Console.WriteLine($"{b.Name} ({b.Type}) {b.From}->{b.To}, Value = {b.Value}");
-
-        SystemData data = SystemOfEquations(graph);
+        string[] variablesY;
+        SystemData data = SystemOfEquations(graph, out variablesY);
         EulerSolver solver = new EulerSolver();
         Vector y = solver.Solve(data);
-        Console.WriteLine("Y="); y.Print();
+        Console.WriteLine("Y:"); 
+        y.Print();
         new Drawer("../../../../Images/outputY.png").DrawToFile(solver.Ydata, solver.time, variablesY);
-        new Drawer("../../../../Images/outputX.png").DrawToFile(solver.Xdata, solver.time, data.VariablesX.ToArray());
+        new Drawer("../../../../Images/outputX.png").DrawToFile(solver.Xdata, solver.time, [.. data.VariablesX]);
     }
-    private static string[] variablesY;
-    private static SystemData SystemOfEquations(CircuitGraph graph)
+    private static SystemData SystemOfEquations(CircuitGraph graph, out string[] variablesY)
     {
         var treeBranches = TreeBuilder.BuildTree(graph);
 
@@ -61,7 +61,7 @@ class Program
             Console.WriteLine($"{ohm[j]}");
 
         string[] variables = CreateVariables(graph);
-        Console.WriteLine("Переменные: " + string.Join(" ", variables));
+        Console.WriteLine("\nПеременные: " + string.Join(" ", variables));
         Console.WriteLine("\nМатрица системы: ");
         Matrix systemMatrix = KirchhoffBuilder.BuildSystemMatrix(kvl, kcl, ohm, variables);
         systemMatrix.Print();
@@ -86,7 +86,6 @@ class Program
             variables[2 * i] = "U_" + graph.Branches[i].Name;
             variables[2 * i + 1] = "I_" + graph.Branches[i].Name;
         }
-
         return variables;
     }
 

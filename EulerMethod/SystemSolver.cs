@@ -110,7 +110,6 @@ internal class SystemSolver
     private void RearrangeMatrix()
     {
         List<string> variablesOther = new();
-
         foreach (var variable in _variables)
         {
             string[] parts = variable.Split('_');
