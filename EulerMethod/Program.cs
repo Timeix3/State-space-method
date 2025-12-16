@@ -6,7 +6,7 @@ class Program
     {
         CircuitGraph graph = new();
 
-        string path = "../../../circuit.json";
+        string path = "../../../circuit2.json";
         if (!File.Exists(path))
         {
             Console.WriteLine("Файл не найден!");
@@ -20,7 +20,9 @@ class Program
         string[] variablesY;
         SystemData data = SystemOfEquations(graph, out variablesY);
         EulerSolver solver = new EulerSolver();
-        Vector y = solver.Solve(data);
+        Console.WriteLine("Введите конечное время симуляции: ");
+        double t = double.Parse(Console.ReadLine());
+        Vector y = solver.Solve(data, tEnd: t);
         Console.WriteLine("Y:"); 
         y.Print();
         new Drawer("../../../../Images/outputY.png").DrawToFile(solver.Ydata, solver.time, variablesY);
@@ -52,13 +54,13 @@ class Program
             Console.WriteLine($"Контур {i + 1} ({graph.Branches[chordBranchesOrdered[i]].Name}):  {kvl[i]}");
 
         Console.WriteLine("\nУравнения KCL: ");
-        for (int j = 0; j < kcl.Count; j++)
-            Console.WriteLine($"Сечение {j + 1} ({graph.Branches[treeBranches[j]].Name}):  {kcl[j]}");
+        for (int i = 0; i < kcl.Count; i++)
+            Console.WriteLine($"Сечение {i + 1} ({graph.Branches[treeBranches[i]].Name}):  {kcl[i]}");
 
         Console.WriteLine("\nЗаконы ома для резисторов: ");
         var ohm = KirchhoffBuilder.OhmLawForResistors(graph);
-        for (int j = 0; j < ohm.Count; j++)
-            Console.WriteLine($"{ohm[j]}");
+        for (int i = 0; i < ohm.Count; i++)
+            Console.WriteLine($"{ohm[i]}");
 
         string[] variables = CreateVariables(graph);
         Console.WriteLine("\nПеременные: " + string.Join(" ", variables));
