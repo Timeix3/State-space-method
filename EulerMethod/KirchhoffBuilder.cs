@@ -82,10 +82,11 @@ internal static class KirchhoffBuilder
         return equations;
     }
 
-    public static Matrix BuildSystemMatrix(List<Equation> kvl, List<Equation> kcl, List<Equation> ohm, string[] variables)
+    public static Matrix BuildSystemMatrix(List<Equation> kvl, List<Equation> kcl, List<Equation> ohm,
+        List<Equation> current, string[] variables)
     {
-        Matrix matrix = new Matrix(kvl.Count + kcl.Count + ohm.Count, variables.Length);
-        List<Equation> allEquations = [.. kvl, .. kcl, .. ohm];
+        Matrix matrix = new Matrix(kvl.Count + kcl.Count + ohm.Count + current.Count, variables.Length);
+        List<Equation> allEquations = [.. kvl, .. kcl, .. ohm, .. current];
         for (int i = 0; i < allEquations.Count;i++)
         {
             int j = 0;
@@ -96,5 +97,22 @@ internal static class KirchhoffBuilder
             }
         }
         return matrix;
+    }
+
+    public static List<Equation> EquationsForCurrentSource(CircuitGraph graph, string[] variables)
+    {
+        List<Equation> equations = new();
+        foreach (var branch in graph.Branches)
+        {
+            if (branch.Type == "S")
+            {
+                Equation eq = new Equation();
+                eq.AddTerm(new Term($"I_{branch.Name}", TermType.Variable, 1));
+                eq.AddTerm(new Term($"U_{branch.Parent}", TermType.Variable, -branch.Value));
+                eq.AddTerm(new Term("= 0", TermType.Equal, -1));
+                equations.Add(eq);
+            }
+        }
+        return equations;
     }
 }

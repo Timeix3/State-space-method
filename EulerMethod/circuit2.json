@@ -4,104 +4,104 @@
     "Type": "V",
     "From": 5,
     "To": 0,
-    "Value": 0.5
+    "Value": 5
   },
   {
     "Name": "Cn",
     "Type": "C",
     "From": 1,
     "To": 5,
-    "Value": 0.5
+    "Value": 0.003
   },
   {
     "Name": "Csi2",
     "Type": "C",
     "From": 1,
     "To": 3,
-    "Value": 0.5
+    "Value": 0.001
   },
   {
     "Name": "Csi1",
     "Type": "C",
     "From": 3,
     "To": 5,
-    "Value": 0.5
+    "Value": 0.001
   },
   {
     "Name": "Czi3",
     "Type": "C",
     "From": 0,
     "To": 1,
-    "Value": 0.5
+    "Value": 0.002
   },
   {
     "Name": "Czs2",
     "Type": "C",
     "From": 2,
     "To": 1,
-    "Value": 0.5
+    "Value": 0.005
   },
   {
     "Name": "Czi2",
     "Type": "C",
     "From": 2,
     "To": 3,
-    "Value": 0.5
+    "Value": 0.002
   },
   {
     "Name": "Czs1",
     "Type": "C",
     "From": 4,
     "To": 3,
-    "Value": 0.5
+    "Value": 0.005
   },
   {
     "Name": "Czi1",
     "Type": "C",
     "From": 4,
     "To": 5,
-    "Value": 0.5
+    "Value": 0.002
   },
   {
     "Name": "Uzi1",
     "Type": "V",
-    "From": 5,
-    "To": 4,
-    "Value": 0.5
+    "From": 4,
+    "To": 5,
+    "Value": 0
   },
   {
     "Name": "Uzi2",
     "Type": "V",
-    "From": 3,
-    "To": 2,
-    "Value": 0.5
+    "From": 2,
+    "To": 3,
+    "Value": 5
   },
   {
     "Name": "Csi3",
     "Type": "C",
     "From": 0,
     "To": 1,
-    "Value": 0.5
+    "Value": 0.001
   },
   {
-    "Name": "J3",
-    "Type": "J",
+    "Name": "S3",
+    "Type": "S",
     "From": 0,
     "To": 1,
-    "Value": 0.5
+    "Value": 0.01
   },
   {
-    "Name": "J2",
-    "Type": "J",
+    "Name": "S2",
+    "Type": "S",
     "From": 1,
     "To": 3,
-    "Value": 0.5
+    "Value": 0.01
   },
   {
-    "Name": "J1",
-    "Type": "J",
+    "Name": "S1",
+    "Type": "S",
     "From": 3,
     "To": 5,
-    "Value": 0.5
+    "Value": 0.01
   }
 ]

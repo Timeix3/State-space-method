@@ -3,6 +3,7 @@
 internal class Branch
 {
     [JsonProperty] public string Name { get; }
+    public string Parent { get; set; }
     [JsonProperty] public string Type { get; }
     [JsonProperty] public int From { get; }
     [JsonProperty] public int To { get; }

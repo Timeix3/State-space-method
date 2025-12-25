@@ -6,7 +6,7 @@ class Program
     {
         CircuitGraph graph = new();
 
-        string path = "../../../circuit2.json";
+        string path = "../../../circuit.json";
         if (!File.Exists(path))
         {
             Console.WriteLine("Файл не найден!");
@@ -65,7 +65,7 @@ class Program
         string[] variables = CreateVariables(graph);
         Console.WriteLine("\nПеременные: " + string.Join(" ", variables));
         Console.WriteLine("\nМатрица системы: ");
-        Matrix systemMatrix = KirchhoffBuilder.BuildSystemMatrix(kvl, kcl, ohm, variables);
+        Matrix systemMatrix = KirchhoffBuilder.BuildSystemMatrix(kvl, kcl, ohm, KirchhoffBuilder.EquationsForCurrentSource(graph, variables), variables);
         systemMatrix.Print();
 
         Console.Write("Введите анализируемые переменные через пробел: ");
@@ -97,7 +97,22 @@ class Program
         var branches = JsonConvert.DeserializeObject<List<Branch>>(json);
         CircuitGraph graph = new CircuitGraph();
         foreach (var b in branches)
+        {
             graph.AddBranch(b.Name, b.Type, b.From, b.To, b.Value);
+        }
+        DefineCurrentSource(graph);
         return graph;
+    }
+
+    private static void DefineCurrentSource(CircuitGraph graph)
+    {
+        foreach (var b in graph.Branches)
+        {
+            if (b.Type == "S")
+            {
+                Console.Write($"Введите напряжение для источника тока {b.Name}: ");
+                b.Parent = Console.ReadLine();
+            }
+        }
     }
 }
