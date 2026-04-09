@@ -31,7 +31,6 @@ class Program
     private static SystemData SystemOfEquations(CircuitGraph graph, out string[] variablesY)
     {
         var treeBranches = TreeBuilder.BuildTree(graph);
-
         Console.WriteLine("Дерево содержит ветви:");
         foreach (var i in treeBranches)
             Console.WriteLine($"{graph.Branches[i].Name} ({graph.Branches[i].Type})");
